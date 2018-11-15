@@ -10,3 +10,11 @@ CREATE TABLE IF NOT EXISTS "users" (
 "created_at" DATETIME NOT NULL,
 "updated_at" DATETIME NOT NULL
 , "password_hash" TEXT NOT NULL DEFAULT '');
+CREATE TABLE IF NOT EXISTS "posts" (
+"id" TEXT PRIMARY KEY,
+"title" TEXT NOT NULL,
+"content" TEXT NOT NULL,
+"author_id" char(36) NOT NULL,
+"created_at" DATETIME NOT NULL,
+"updated_at" DATETIME NOT NULL
+);

@@ -95,3 +95,15 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 		return next(c)
 	}
 }
+
+// AdminRequired requires a user to be logged in and to be an admin before accessing a route.
+func AdminRequired(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		user, ok := c.Value("current_user").(*models.User)
+		if ok && user.Admin {
+			return next(c)
+		}
+		c.Flash().Add("danger", "You are not authorized to view that page.")
+		return c.Redirect(302, "/")
+	}
+}
