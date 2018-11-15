@@ -71,3 +71,10 @@ func UsersLoginPost(c buffalo.Context) error {
 	c.Flash().Add("success", "Welcome back!")
 	return c.Redirect(302, "/")
 }
+
+// UsersLogout clears the session and logs out the user.
+func UsersLogout(c buffalo.Context) error {
+	c.Session().Clear()
+	c.Flash().Add("success", "Goodbye!")
+	return c.Redirect(302, "/")
+}
