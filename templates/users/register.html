@@ -15,7 +15,8 @@
               </div>
               <% } %>
           <% } %>
-          <form action="<%= usersRegisterPath() %>" method="GET" novalidate>
+          <form action="<%= usersRegisterPath() %>" method="POST" novalidate>
+            <%= csrf() %>
             <div class="form-group">
               <label for="email">Email address</label>
               <input type="email" name="Email" class="form-control" id="email">
