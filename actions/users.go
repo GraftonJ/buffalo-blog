@@ -1,11 +1,11 @@
 package actions
 
 import (
-	"github.com/gobuffalo/buffalo"
 	"github.com/GraftonJ/blog_app/models"
-	"github.com/pkg/errors"
+	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/validate"
+	"github.com/pkg/errors"
 )
 
 // UserRegisterGet displays a register form

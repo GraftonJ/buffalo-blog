@@ -1,18 +1,18 @@
 package models
 
 import (
-	"encoding/json"
-	"time"
-	"strings"
-	"fmt"
 	"database/sql"
+	"encoding/json"
+	"fmt"
+	"strings"
+	"time"
 
-	"golang.org/x/crypto/bcrypt"
-	"github.com/pkg/errors"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
 	"github.com/gobuffalo/validate/validators"
+	"github.com/pkg/errors"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
