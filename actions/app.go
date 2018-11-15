@@ -54,7 +54,7 @@ func App() *buffalo.App {
 		//  c.Value("tx").(*pop.Connection)
 		// Remove to disable this.
 		app.Use(popmw.Transaction(models.DB))
-
+		app.Use(SetCurrentUser)
 		// Setup and use translations:
 		app.Use(translations())
 
