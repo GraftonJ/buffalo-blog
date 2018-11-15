@@ -3,7 +3,10 @@ package models
 import (
 	"encoding/json"
 	"time"
-
+	"strings"
+	
+	"golang.org/x/crypto/bcrypt"
+	"github.com/pkg/errors"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
@@ -20,6 +23,18 @@ type User struct {
 	PasswordHash    string    `json:"-" db:"password_hash"`
 	Password        string    `json:"-" db:"-"`
 	PasswordConfirm string    `json:"-" db:"-"`
+}
+
+// Create validates and creates a new User.
+func (u *User) Create(tx *pop.Connection) (*validate.Errors, error) {
+	u.Email = strings.ToLower(u.Email)
+	u.Admin = false
+	pwdHash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return validate.NewErrors(), errors.WithStack(err)
+	}
+	u.PasswordHash = string(pwdHash)
+	return tx.ValidateAndCreate(u)
 }
 
 // String is not required by pop and may be deleted
