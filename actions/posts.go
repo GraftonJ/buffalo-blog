@@ -6,10 +6,23 @@ import (
 				"github.com/pkg/errors"
 				"github.com/GraftonJ/blog_app/models"
 		)
-// PostsIndex default implementation.
-func PostsIndex(c buffalo.Context) error {
-	return c.Render(200, r.HTML("posts/index.html"))
-}
+		// PostsIndex default implementation.
+		func PostsIndex(c buffalo.Context) error {
+			tx := c.Value("tx").(*pop.Connection)
+			posts := &models.Posts{}
+			// Paginate results. Params "page" and "per_page" control pagination.
+			// Default values are "page=1" and "per_page=20".
+			q := tx.PaginateFromParams(c.Params())
+			// Retrieve all Posts from the DB
+			if err := q.All(posts); err != nil {
+				return errors.WithStack(err)
+			}
+			// Make posts available inside the html template
+			c.Set("posts", posts)
+			// Add the paginator to the context so it can be used in the template.
+			c.Set("pagination", q.Paginator)
+			return c.Render(200, r.HTML("posts/index.html"))
+		}
 
 //Inserted
 func PostsCreateGet(c buffalo.Context) error {
@@ -54,7 +67,18 @@ func PostsDelete(c buffalo.Context) error {
 	return c.Render(200, r.HTML("posts/delete.html"))
 }
 
-// PostsDetail default implementation.
+// PostsDetail displays a single post.
 func PostsDetail(c buffalo.Context) error {
-	return c.Render(200, r.HTML("posts/detail.html"))
+	tx := c.Value("tx").(*pop.Connection)
+	post := &models.Post{}
+	if err := tx.Find(post, c.Param("pid")); err != nil {
+		return c.Error(404, err)
+	}
+	author := &models.User{}
+	if err := tx.Find(author, post.AuthorID); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("post", post)
+	c.Set("author", author)
+	return c.Render(200, r.HTML("posts/detail"))
 }
