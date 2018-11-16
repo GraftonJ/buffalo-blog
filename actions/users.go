@@ -107,3 +107,15 @@ func AdminRequired(next buffalo.Handler) buffalo.Handler {
 		return c.Redirect(302, "/")
 	}
 }
+
+//Must be logged in to leave a comment
+func LoginRequired(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		_, ok := c.Value("current_user").(*models.User)
+		if ok {
+			return next(c)
+		}
+		c.Flash().Add("danger", "You are not authorized to view that page.")
+		return c.Redirect(302, "/")
+	}
+}

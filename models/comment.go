@@ -4,26 +4,26 @@ import (
 	"time"
 
 	"github.com/gobuffalo/pop"
-	uuid "github.com/gobuffalo/uuid"
-	"github.com/gobuffalo/validate"
+  "github.com/gobuffalo/validate"
 	"github.com/gobuffalo/validate/validators"
+	uuid "github.com/gobuffalo/uuid"
 )
 
-type Post struct {
+type Comment struct {
 	ID        uuid.UUID `json:"id" db:"id"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
-	Title     string    `json:"title" db:"title"`
 	Content   string    `json:"content" db:"content"`
 	AuthorID  uuid.UUID `json:"author_id" db:"author_id"`
+	PostID    uuid.UUID `json:"post_id" db:"post_id"`
+	Author    User      `json:"-" db:"-"`
 }
 
-type Posts []Post
+type Comments []Comment
 
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
-func (p *Post) Validate(tx *pop.Connection) (*validate.Errors, error) {
+func (c *Comment) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
-		&validators.StringIsPresent{Field: p.Title, Name: "Title"},
-		&validators.StringIsPresent{Field: p.Content, Name: "Content"},
+		&validators.StringIsPresent{Field: c.Content, Name: "Content"},
 	), nil
 }

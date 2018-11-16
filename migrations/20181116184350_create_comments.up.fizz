@@ -1,6 +1,6 @@
-create_table("posts") {
+create_table("comments") {
 	t.Column("id", "uuid", {"primary": true})
-	t.Column("title", "string", {})
 	t.Column("content", "text", {})
 	t.Column("author_id", "uuid", {})
+    t.Column("post_id", "uuid", {})
 }

@@ -18,3 +18,11 @@ CREATE TABLE IF NOT EXISTS "posts" (
 "created_at" DATETIME NOT NULL,
 "updated_at" DATETIME NOT NULL
 );
+CREATE TABLE IF NOT EXISTS "comments" (
+"id" TEXT PRIMARY KEY,
+"content" TEXT NOT NULL,
+"author_id" char(36) NOT NULL,
+"post_id" char(36) NOT NULL,
+"created_at" DATETIME NOT NULL,
+"updated_at" DATETIME NOT NULL
+);
